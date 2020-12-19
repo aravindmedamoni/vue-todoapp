@@ -7,23 +7,31 @@
     </div>
 
     <div class="todoDiv">
+      <transition name="slide-up">
       <div v-if="getTodos.length>0" :class= "pendivClsName">
         <h1>Pending Todo's</h1>
+        <transition-group name="slide-up" tag="div" appear>
        <div v-for="(todo,index) in getTodos" :key="index" class="todoItemDiv">
         <input type="checkbox" class="chbox" v-model="todo.isDone">
         <input type="text" name="updateText" :class='todo.isDone?"deletedtodoText todoText":"todoText"' @keyup.enter="updateTodo(index)" v-model="todo.text">
         <button @click='deleteTodo(index)' class="dltButton">delete</button>
+       </div>
+         </transition-group>
       </div>
-    </div>
-    <div  v-if="getTodoDeletedTodos.length>0" :class= "delDivClsName" class="deletedTodoDiv">
-      <h1>Deleted Todo's</h1>
-      <div v-for="(todo,index) in getTodoDeletedTodos" :key="index" class="todoItemDiv">
-        <input type="checkbox" class="chbox" disabled v-model="todo.isDone">
-        <input disabled type="text" :value="todo.text" :class='todo.isDone?"deletedtodoText todoText":"todoText"'>
-        <button @click="undoTodo(index)"  class="undoButton">Undo</button>
-        <button @click="removeTodo(index)"  class="dltButton">Bin It</button>
+      </transition>
+      <transition name="slide-up">
+      <div  v-if="getTodoDeletedTodos.length>0" :class= "delDivClsName" class="deletedTodoDiv">
+         <h1>Deleted Todo's</h1>
+         <transition-group name="slide-up" appear>
+         <div v-for="(todo,index) in getTodoDeletedTodos" :key="index" class="todoItemDiv">
+           <input type="checkbox" class="chbox" disabled v-model="todo.isDone">
+           <input disabled type="text" :value="todo.text" :class='todo.isDone?"deletedtodoText todoText":"todoText"'>
+           <button @click="undoTodo(index)"  class="undoButton">Undo</button>
+           <button @click="removeTodo(index)"  class="dltButton">Bin It</button>
+         </div>
+         </transition-group>
       </div>
-    </div>
+      </transition>
     </div>
   
 
@@ -99,6 +107,27 @@ export default {
 
 
 <style scoped>
+/* 
+-----------------------------------------------------
+              Animations Style start
+-----------------------------------------------------
+ */
+.slide-up-enter {
+  transform: translateY(10px);
+  opacity: 0;
+}
+.slide-up-enter-active {
+  transition: all 1s ease;
+}
+
+.slide-up-move {
+  transition: transform 0.5s ease-out;
+}
+/* 
+-----------------------------------------------------
+              Animations Style end
+-----------------------------------------------------
+ */
     .addTodo{
     padding: 15px;
     margin: 0 10px;
